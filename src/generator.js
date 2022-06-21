@@ -4,7 +4,7 @@ const sharp = require('sharp')
 require('dotenv').config()
 
 // determines how many colors to make and an array for taken colors
-let idx = 5;
+let idx = 0;
 let takenColors = []
 
 // a function to generate a random number based on min and max values
@@ -93,7 +93,7 @@ if (!existsSync('./out')){
 }
 
 // cleanup dir before each run
-readdirSync('./out').forEach(f => rmSync(`./out/${f}`));
+//readdirSync('./out').forEach(f => rmSync(`./out/${f}`));
 
 // runs the generator
 do {
