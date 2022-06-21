@@ -1,23 +1,26 @@
-const { readFileSync, writeFileSync, readdirSync, rmSync, existsSync, mkdirSync } = require('fs')
+// dependecies
+const { writeFileSync, readdirSync, rmSync, existsSync, mkdirSync } = require('fs')
 const sharp = require('sharp')
 require('dotenv').config()
+
+// determines how many colors to make and an array for taken colors
 let idx = 5;
 let takenColors = []
 
+// a function to generate a random number based on min and max values
 function randomValue(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// creates a random rgb value
 function createColor(){
-    // const r = randomValue(74,74)
-    // const g = randomValue(19,19)
-    // const b = randomValue(3,3)
     const r = randomValue(0, 255)
     const g = randomValue(0, 255)
     const b = randomValue(0, 255)
     return [r,g,b]
 }
 
+// converts an svg to a png file
 async function svgToPng(name) {
     const src = `./out/${name}.svg`;
     const dest = `./out/${name}.png`;
@@ -27,6 +30,7 @@ async function svgToPng(name) {
     await resized.toFile(dest);
 }
 
+// search for an array in an array
 function searchForArray(haystack, needle){
     var i, j, current;
     for(i = 0; i < haystack.length; ++i){
@@ -40,6 +44,7 @@ function searchForArray(haystack, needle){
     return -1;
   }
 
+// creates the color image and makes an svg, json, and png file in the ../out directory
 function createImage(idx){
     const colorValues = createColor();
     const color = `rgb(${colorValues[0]},${colorValues[1]},${colorValues[2]})`
@@ -79,20 +84,18 @@ function createImage(idx){
         writeFileSync(`./out/${idx}.svg`, template)
         svgToPng(idx)
     }
-
-    
 }
 
 
-// Create dir if not exists
+// create dir if not exists
 if (!existsSync('./out')){
     mkdirSync('./out');
 }
 
-// Cleanup dir before each run
+// cleanup dir before each run
 readdirSync('./out').forEach(f => rmSync(`./out/${f}`));
 
-
+// runs the generator
 do {
     createImage(idx);
     idx--;
